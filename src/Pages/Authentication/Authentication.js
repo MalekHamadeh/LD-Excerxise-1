@@ -12,7 +12,9 @@ import {
 
 const Authentication = () => {
   const [signedUp, isSignedUp] = useState(true);
-
+  const SignMeUp = () => {
+    isSignedUp(false);
+  };
   return (
     <Outline>
       <HeaderWrapper>
@@ -21,7 +23,7 @@ const Authentication = () => {
         <Header>Out Of The Box</Header>
       </HeaderWrapper>
       <StyledPaper elevation='3'>
-        {signedUp ? <Login /> : <Signup />}
+        {signedUp ? <Login onClick={SignMeUp} /> : <Signup />}
       </StyledPaper>
     </Outline>
   );
