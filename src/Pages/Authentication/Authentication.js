@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Login from "../../Components/Login/Login";
-import Signup from "../../Components/Signup/Signup";
+import Login from "../../Components/AuthenticationComponents/Login";
+import Signup from "../../Components/AuthenticationComponents/Signup";
 import logo from "../../Images/FrameRoundRush.svg";
 import {
   Outline,
@@ -11,7 +11,7 @@ import {
 } from "./StyleAuthentication";
 
 const Authentication = () => {
-  const [signedUp, isSignedUp] = useState(true);
+  const [signedUp, isSignedUp] = useState(false);
   const SignMeUp = () => {
     isSignedUp(false);
   };

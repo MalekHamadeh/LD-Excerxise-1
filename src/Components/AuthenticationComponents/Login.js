@@ -2,15 +2,15 @@ import { Button } from "@mui/material";
 import React, { useState } from "react";
 import {
   GridItem,
-  LoginGrid,
+  GridContainer,
   StyledButton,
   StyledInput,
-  Title,
   VerticalGridItem,
   LeftGridItem,
   RightGridItem,
   StyledAlert,
-} from "./StyledLogin";
+  StyledText,
+} from "../../Pages/Authentication/StyleAuthentication";
 
 const Login = ({ onClick }) => {
   const [incorrect, isIncorrect] = useState(false);
@@ -18,7 +18,7 @@ const Login = ({ onClick }) => {
     isIncorrect(!incorrect);
   };
   return (
-    <LoginGrid
+    <GridContainer
       container
       direction='column'
       justifyContent='center'
@@ -29,7 +29,9 @@ const Login = ({ onClick }) => {
       <GridItem item />
       <GridItem item />
       <GridItem item xs={1}>
-        <Title variant='h4'>Login</Title>
+        <StyledText variant='h4' type='title'>
+          Login
+        </StyledText>
       </GridItem>
       <GridItem item />
       <GridItem item>
@@ -58,7 +60,7 @@ const Login = ({ onClick }) => {
           <Button onClick={() => onClick()}> I dont have an account </Button>
         </RightGridItem>
       </VerticalGridItem>
-    </LoginGrid>
+    </GridContainer>
   );
 };
 
