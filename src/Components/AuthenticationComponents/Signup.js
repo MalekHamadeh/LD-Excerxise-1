@@ -8,11 +8,10 @@ import {
   StyledText,
 } from "../../Pages/Authentication/StyleAuthentication";
 import SignUpContext from "../../Utils/SignUpContext/SignUpContext";
-import useSignUpContext from "../../Utils/SignUpContext/useSignUpContext";
 
 const Signup = () => {
   const { title, step, setStep, data, setData, canContinue } =
-    useSignUpContext();
+    useContext(SignUpContext);
 
   const handlePrev = () => {
     setStep((prev) => prev - 1);
@@ -25,7 +24,7 @@ const Signup = () => {
       direction='column'
       justifyContent='center'
       alignItems='center'
-      spacing={3}
+      spacing={2}
     >
       <GridItem xs={1} />
       <GridItem xs={1} />

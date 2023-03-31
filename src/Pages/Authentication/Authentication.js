@@ -11,6 +11,7 @@ import {
   StyledLogo,
 } from "./StyleAuthentication";
 import { SignUpProvider } from "../../Utils/SignUpContext/SignUpContext";
+import { PasswordProvider } from "../../Utils/PasswordContext/PasswordContext";
 
 const Authentication = () => {
   const [screen, setScreen] = useState("Login");
@@ -30,9 +31,13 @@ const Authentication = () => {
         {screen === "Login" ? (
           <Login onClick={handleScreens} />
         ) : screen === "SignUp" ? (
-          <Signup />
+          <SignUpProvider>
+            <Signup />
+          </SignUpProvider>
         ) : (
-          <ForgotPassword onClick={handleScreens} />
+          <PasswordProvider>
+            <ForgotPassword onClick={handleScreens} />
+          </PasswordProvider>
         )}
       </StyledPaper>
     </Outline>
