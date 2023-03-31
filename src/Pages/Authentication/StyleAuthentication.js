@@ -47,17 +47,17 @@ export const StyledPaper = styled(Paper)`
 
 //#region Styles used in the Login and SignUp components
 
-export const GridContainer = styled(Grid)``;
-export const GridItem = styled(Grid)``;
-export const VerticalGridItem = styled(Grid)`
+export const GridContainer = styled(Grid).attrs({ container: true })``;
+export const GridItem = styled(Grid).attrs({ item: true })``;
+export const VerticalGridItem = styled(Grid).attrs({ item: true })`
   display: flex;
   flex-direction: row;
   width: 30vw;
 `;
-export const LeftGridItem = styled(Grid)`
+export const LeftGridItem = styled(Grid).attrs({ item: true })`
   margin-left: 0;
 `;
-export const RightGridItem = styled(Grid)`
+export const RightGridItem = styled(Grid).attrs({ item: true })`
   margin-right: 0;
 `;
 
@@ -77,6 +77,11 @@ export const StyledButton = styled(Button)`
   height: 6vh;
   && {
     font-family: "Rubik", sans sheriff;
+    text-transform: none;
+    background-color: ${({ register }) => register && "#29C293"};
+    &:hover {
+      background-color: ${({ register }) => register && "#29C293"};
+    }
   }
 `;
 
