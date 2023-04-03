@@ -1,17 +1,9 @@
-import {
-  Divider,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-} from "@mui/material";
-import React, { useEffect } from "react";
+import { List, ListItem, ListItemButton, ListItemText } from "@mui/material";
+import React from "react";
 import SquareRoundedIcon from "@mui/icons-material/SquareRounded";
+import styled from "styled-components";
 
 const NeededDrawerList = ({ items: { iconColor, text } }) => {
-  //   useEffect(() => {
-  //     console.log(item);
-  //   }, [item]);
   const handleColor = (color) => {
     if (color === "Yellow") {
       return "#EEC301";
@@ -23,19 +15,24 @@ const NeededDrawerList = ({ items: { iconColor, text } }) => {
       return "#FC91AD";
     }
   };
+  const StyledListItemText = styled(ListItemText)`
+    & .MuiListItemText-primary {
+      font-size: 0.79rem;
+      font-family: "Rubik", sans-serif;
+    }
+  `;
+
+  const StyledItemIcon = styled(SquareRoundedIcon)`
+    color: ${handleColor(iconColor)};
+  `;
 
   return (
-    <List>
-      <ListItem>
-        <ListItemButton
-          sx={{
-            color: handleColor(iconColor),
-            justifyContent: "center",
-          }}
-        >
-          <SquareRoundedIcon />
+    <List disablePadding>
+      <ListItem disablePadding>
+        <ListItemButton justifyContent='center' alignItems='center'>
+          <StyledItemIcon />
+          <StyledListItemText primary={text} />
         </ListItemButton>
-        <ListItemText primary={text} sx={{ color: "#fff" }} />
       </ListItem>
     </List>
   );

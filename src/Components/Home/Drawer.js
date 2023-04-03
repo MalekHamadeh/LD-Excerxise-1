@@ -11,12 +11,14 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
 import smallLogo from "../../Images/SmallLogo.svg";
 import NeededDrawerList from "./NeededDrawerList";
-import PeopleIcon from "@mui/icons-material/People";
+import TeamIcon from "../../Images/teamIcon.svg";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
+import BrotliLogo from "../../Images/brotliLogo.svg";
+import PersonalBoardIcon from "../../Images/personalBoardIcon.svg";
+import HomeIcon from "../../Images/homeIcon.svg";
+import SettingsIcon from "../../Images/settingsIcon.svg";
 
 const drawerWidth = 240;
 
@@ -78,35 +80,75 @@ const StyledDivider = styled(Divider)(({ theme }) => ({
   background: "#fff",
 }));
 
-export default function MiniDrawer() {
-  const [open, setOpen] = React.useState(true);
-  const [nestedIsOpen, setNestedIsOpen] = React.useState(true);
+const StyledListItemText = styled(ListItemText)`
+  & .MuiListItemText-primary {
+    font-family: "Rubik", sans-serif;
+  }
+`;
 
-  const [items, setItems] = React.useState([
+export default function MiniDrawer() {
+  const [open, setOpen] = React.useState(false);
+  const [nestedIsOpen, setNestedIsOpen] = React.useState(false);
+
+  const [mainItems, setMainItems] = React.useState([
     {
-      text: "Frontend",
+      icon: BrotliLogo,
+      text: "YellowTech Inc.",
+    },
+    {
+      icon: PersonalBoardIcon,
+      text: "Personal Dashboard",
+    },
+    {
+      icon: HomeIcon,
+      text: "Dashboard",
+    },
+    {
+      icon: SettingsIcon,
+      text: "Space Settings",
+    },
+  ]);
+
+  const [subitems, setSubItems] = React.useState([
+    {
+      text: "Coraly Tech & Dev",
       iconColor: "Yellow",
-      title: "Programming",
+      title: "Coraly",
     },
     {
-      text: "python",
-      iconColor: "Pink",
-      title: "Programming",
-    },
-    {
-      text: "pizza",
+      text: "Design Board",
       iconColor: "Red",
-      title: "Cooking",
+      title: "Coraly",
     },
     {
-      text: "burger",
+      text: "Growth Hacking",
+      iconColor: "pink",
+      title: "Coraly",
+    },
+    {
+      text: "Website",
       iconColor: "Yellow",
-      title: "Cooking",
+      title: "Lasting Dynamics",
     },
     {
-      text: "pepsi",
+      text: "Growth Hacking",
+      iconColor: "Red",
+      title: "Lasting Dynamics",
+    },
+    {
+      text: "UI/UX Design",
       iconColor: "Pink",
-      title: "Drinks",
+      title: "Lasting Dynamics",
+    },
+    {
+      text: "VL - Tech & Dev",
+      iconColor: "Yellow",
+      title: "Vetrina Live",
+    },
+    {
+      text: "VL - Growth Hacking",
+      iconColor: "Red",
+      title: "Vetrina Live",
     },
   ]);
 
@@ -117,7 +159,7 @@ export default function MiniDrawer() {
   const handleNesetedDrawer = () => {
     setNestedIsOpen(!nestedIsOpen);
   };
-  const groupedItems = items.reduce((acc, item) => {
+  const groupedItems = subitems.reduce((acc, item) => {
     const { title } = item;
     if (title) {
       acc[title] = [...(acc[title] || []), item];
@@ -126,9 +168,9 @@ export default function MiniDrawer() {
   }, {});
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box>
       <CssBaseline enableColorScheme />
-      <Drawer variant='permanent' open={open}>
+      <Drawer variant='permanent' open={open} sx={{ display: "flex" }}>
         <DrawerHeader>
           {open && <img src={smallLogo} alt='logo' />}
           <IconButton onClick={handleDrawer}>
@@ -137,8 +179,8 @@ export default function MiniDrawer() {
         </DrawerHeader>
 
         <List>
-          {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: "block" }}>
+          {mainItems.map(({ text, icon }, index) => (
+            <ListItem key={index} disablePadding sx={{ display: "block" }}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -154,9 +196,12 @@ export default function MiniDrawer() {
                     color: "#fff",
                   }}
                 >
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                  {icon && <img src={icon} alt='icon' />}
                 </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                <StyledListItemText
+                  primary={text}
+                  sx={{ opacity: open ? 1 : 0 }}
+                />
               </ListItemButton>
             </ListItem>
           ))}
@@ -180,9 +225,12 @@ export default function MiniDrawer() {
                   color: "#fff",
                 }}
               >
-                <PeopleIcon />
+                <img src={TeamIcon} alt='icon' />
               </ListItemIcon>
-              <ListItemText primary='Teams' sx={{ opacity: open ? 1 : 0 }} />
+              <StyledListItemText
+                primary='Teams'
+                sx={{ opacity: open ? 1 : 0 }}
+              />
               {open ? nestedIsOpen ? <ExpandLess /> : <ExpandMore /> : null}
             </ListItemButton>
           </ListItem>
@@ -195,7 +243,7 @@ export default function MiniDrawer() {
                     <ListItemText primary={name} />
                   </ListItem>
 
-                  {items.map((subitem) => {
+                  {items.map((subitem, index) => {
                     return (
                       <ListItem>
                         <NeededDrawerList items={subitem} />
@@ -205,6 +253,30 @@ export default function MiniDrawer() {
                 </>
               );
             })}
+          <ListItem disablePadding sx={{ display: "block" }}>
+            <ListItemButton
+              sx={{
+                minHeight: 48,
+                justifyContent: "bottom",
+                px: 2.5,
+              }}
+            >
+              <ListItemIcon
+                sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : "auto",
+                  justifyContent: "bottom",
+                  color: "#fff",
+                }}
+              >
+                <MenuIcon />
+              </ListItemIcon>
+              <StyledListItemText
+                primary='Logout'
+                sx={{ opacity: open ? 1 : 0 }}
+              />
+            </ListItemButton>
+          </ListItem>
         </List>
       </Drawer>
     </Box>
