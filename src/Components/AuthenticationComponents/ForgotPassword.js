@@ -17,7 +17,7 @@ const ForgotPassword = ({ onClick }) => {
   };
 
   const returnToLogin = () => {
-    onClick("login");
+    onClick("Login");
   };
   return (
     <GridContainer
@@ -49,7 +49,9 @@ const ForgotPassword = ({ onClick }) => {
             </StyledButton>
           </GridItem>
           <GridItem xs={1}>
-            <StyledButton variant='text'>Go back</StyledButton>
+            <StyledButton variant='text' onClick={returnToLogin}>
+              Go back
+            </StyledButton>
           </GridItem>
         </>
       )}

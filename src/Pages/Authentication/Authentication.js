@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ForgotPassword from "../../Components/AuthenticationComponents/ForgotPassword";
 import Login from "../../Components/AuthenticationComponents/Login";
 import Signup from "../../Components/AuthenticationComponents/Signup";
@@ -15,9 +15,12 @@ import { PasswordProvider } from "../../Utils/PasswordContext/PasswordContext";
 
 const Authentication = () => {
   const [screen, setScreen] = useState("Login");
+  const [successfulPass, setSuccessfulPass] = useState(false);
 
   const handleScreens = (string) => {
     setScreen(string);
+    console.log(string);
+    console.log(screen);
   };
 
   return (
@@ -29,10 +32,10 @@ const Authentication = () => {
       </HeaderWrapper>
       <StyledPaper elevation={3}>
         {screen === "Login" ? (
-          <Login onClick={handleScreens} />
+          <Login onClick={handleScreens} successfulPass={successfulPass} />
         ) : screen === "SignUp" ? (
           <SignUpProvider>
-            <Signup />
+            <Signup onClick={handleScreens} />
           </SignUpProvider>
         ) : (
           <PasswordProvider>

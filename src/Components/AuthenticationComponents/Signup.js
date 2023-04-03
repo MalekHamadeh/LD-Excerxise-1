@@ -9,12 +9,12 @@ import {
 } from "../../Pages/Authentication/StyleAuthentication";
 import SignUpContext from "../../Utils/SignUpContext/SignUpContext";
 
-const Signup = () => {
+const Signup = ({ onClick }) => {
   const { title, step, setStep, data, setData, canContinue } =
     useContext(SignUpContext);
 
-  const handlePrev = () => {
-    setStep((prev) => prev - 1);
+  const goToLogin = () => {
+    onClick("Login");
   };
   const handleNext = () => {
     setStep((prev) => prev + 1);
@@ -47,13 +47,7 @@ const Signup = () => {
             Next
           </StyledButton>
         ) : (
-          <StyledButton
-            variant='contained'
-            register={true}
-            onClick={() => {
-              console.log("registered");
-            }}
-          >
+          <StyledButton variant='contained' register={true} onClick={goToLogin}>
             Register
           </StyledButton>
         )}

@@ -1,7 +1,8 @@
 import React from "react";
+import Drawer from "../../Components/Home/Drawer";
 
 const Home = () => {
-  return <div>Home</div>;
+  return <Drawer />;
 };
 
 export default Home;

@@ -5,18 +5,22 @@ import {
   GridContainer,
   StyledButton,
   StyledInput,
-  VerticalGridItem,
-  LeftGridItem,
-  RightGridItem,
   StyledAlert,
   StyledText,
 } from "../../Pages/Authentication/StyleAuthentication";
 
-const Login = ({ onClick }) => {
+const Login = ({ onClick, successfulPass }) => {
   const [incorrect, isIncorrect] = useState(false);
   const incorrectCredantials = () => {
     isIncorrect(!incorrect);
   };
+  const goToSignUp = () => {
+    onClick("SignUp");
+  };
+  const goToForgotPassword = () => {
+    onClick("ForgotPassword");
+  };
+
   return (
     <GridContainer
       direction='column'
@@ -35,8 +39,13 @@ const Login = ({ onClick }) => {
       <GridItem />
       <GridItem>
         {incorrect && (
-          <StyledAlert severity='warning'>
+          <StyledAlert severity='error'>
             Please make sure you have the correct email or password
+          </StyledAlert>
+        )}
+        {successfulPass && (
+          <StyledAlert severity='success'>
+            Password was reset Successfully
           </StyledAlert>
         )}
       </GridItem>
@@ -51,19 +60,16 @@ const Login = ({ onClick }) => {
           Login
         </StyledButton>
       </GridItem>
-      <VerticalGridItem>
-        <LeftGridItem>
-          <Button onClick={() => onClick("ForgotPassword")}>
-            Forgot Password?
-          </Button>
-        </LeftGridItem>
-        <RightGridItem>
-          <Button onClick={() => onClick("SignUp")}>
-            {" "}
-            I dont have an account{" "}
-          </Button>
-        </RightGridItem>
-      </VerticalGridItem>
+      <GridItem>
+        <GridContainer direction='row' gap={30}>
+          <GridItem>
+            <Button onClick={goToForgotPassword}>Forgot Password?</Button>
+          </GridItem>
+          <GridItem>
+            <Button onClick={goToSignUp}>I dont have an account</Button>
+          </GridItem>
+        </GridContainer>
+      </GridItem>
     </GridContainer>
   );
 };

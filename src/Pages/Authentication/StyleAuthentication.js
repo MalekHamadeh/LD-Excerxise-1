@@ -45,21 +45,10 @@ export const StyledPaper = styled(Paper)`
 `;
 //#endregion
 
-//#region Styles used in the Login and SignUp components
+//#region Styles used in the Login and SignUp and Forgot Password components
 
 export const GridContainer = styled(Grid).attrs({ container: true })``;
 export const GridItem = styled(Grid).attrs({ item: true })``;
-export const VerticalGridItem = styled(Grid).attrs({ item: true })`
-  display: flex;
-  flex-direction: row;
-  width: 30vw;
-`;
-export const LeftGridItem = styled(Grid).attrs({ item: true })`
-  margin-left: 0;
-`;
-export const RightGridItem = styled(Grid).attrs({ item: true })`
-  margin-right: 0;
-`;
 
 // the && opertator is used because Material-Ui has a higher specificity than our CSS so in order to override the MaterialUI CSS we use && instead of !important
 export const StyledText = styled(Typography)`
@@ -85,16 +74,13 @@ export const StyledButton = styled(Button)`
   }
 `;
 
-export const StyledAlert = styled(Alert)`
-  width: 28vw;
-  && {
-    color: #fd5461;
-    background: #f4f6fc;
-    font-family: "Rubik", sans-serif;
-  }
-  && .MuiSvgIcon {
-    fill: #fd5461;
-  }
-`;
+export const StyledAlert = styled(Alert)(({ severity }) => ({
+  width: "28vw",
+  "&&": {
+    color: severity === "error" ? "#fd5461" : "#29C293",
+    background: "#f4f6fc",
+    fontFamily: "Rubik, sans-serif",
+  },
+}));
 
 //#endregion
