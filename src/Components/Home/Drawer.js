@@ -6,7 +6,7 @@ import List from "@mui/material/List";
 import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
+import { MenuBookTwoTone } from "@mui/icons-material";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
@@ -19,6 +19,10 @@ import BrotliLogo from "../../Images/brotliLogo.svg";
 import PersonalBoardIcon from "../../Images/personalBoardIcon.svg";
 import HomeIcon from "../../Images/homeIcon.svg";
 import SettingsIcon from "../../Images/settingsIcon.svg";
+import MenuIcon from "../../Images/menuIcon.svg";
+import InfoIcon from "../../Images/infoIcon.svg";
+import LogOutIcon from "../../Images/logoutIcon.svg";
+import { Collapse, Icon } from "@mui/material";
 
 const drawerWidth = 240;
 
@@ -76,14 +80,61 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-const StyledDivider = styled(Divider)(({ theme }) => ({
-  background: "#fff",
-}));
+const StyledDivider = styled(Divider)`
+  &. MuiDivider-root {
+    color: "#fff";
+  }
+`;
+
+const StyledLogo = styled(Icon)`
+  background-image: url(${smallLogo});
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  width: 24px;
+  height: 24px;
+  margin-left: 0.5rem;
+`;
+
+const StyledListItem = styled(ListItem)`
+  display: block;
+`;
+
+const StyledListItemButton = styled(ListItemButton)`
+  minHeight: 48,
+  justifyContent: ${({ open }) => (open ? "initial" : "center")},
+
+`;
+
+const StyledListItemIcon = styled(ListItemIcon)`
+  minWidth: 0,
+  mr: ${({ open }) => (open ? 3 : "auto")},
+  color: "#fff",
+  justifyContent: "center",
+`;
 
 const StyledListItemText = styled(ListItemText)`
   & .MuiListItemText-primary {
     font-family: "Rubik", sans-serif;
+    opacity: ${({ open }) => (open ? 1 : 0)};
   }
+`;
+
+const StyledIconButton = styled(IconButton)`
+  color: "#fff";
+`;
+const StyledListItemFooter = styled(ListItem)` 
+    && {
+    background-color: black,
+    position:absolute,
+    height:6vh,
+    top:64.2vh
+    }
+`;
+const VerticalList = styled(List)``;
+const VerticalListItem = styled(ListItem)`
+  flex-direction: ${({ open }) => (open ? "row" : "column")};
+  justify-content: ${({ open }) => (open ? "space-between" : "intial")};
 `;
 
 export default function MiniDrawer() {
@@ -168,115 +219,80 @@ export default function MiniDrawer() {
   }, {});
 
   return (
-    <Box>
+    <Box sx={{ height: "100vh" }}>
       <CssBaseline enableColorScheme />
-      <Drawer variant='permanent' open={open} sx={{ display: "flex" }}>
+      <Drawer
+        variant='permanent'
+        open={open}
+        sx={{ display: "flex", height: "100vh" }}
+      >
         <DrawerHeader>
-          {open && <img src={smallLogo} alt='logo' />}
-          <IconButton onClick={handleDrawer}>
-            <MenuIcon />
-          </IconButton>
+          {open && <StyledLogo />}
+          <StyledIconButton onClick={handleDrawer}>
+            <img src={MenuIcon} alt='icon' />
+          </StyledIconButton>
         </DrawerHeader>
 
         <List>
           {mainItems.map(({ text, icon }, index) => (
-            <ListItem key={index} disablePadding sx={{ display: "block" }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : "auto",
-                    justifyContent: "center",
-                    color: "#fff",
-                  }}
-                >
+            <StyledListItem disablePadding key={index}>
+              <StyledListItemButton open={open}>
+                <StyledListItemIcon open={open}>
                   {icon && <img src={icon} alt='icon' />}
-                </ListItemIcon>
-                <StyledListItemText
-                  primary={text}
-                  sx={{ opacity: open ? 1 : 0 }}
-                />
-              </ListItemButton>
-            </ListItem>
+                </StyledListItemIcon>
+                <StyledListItemText primary={text} open={open} />
+              </StyledListItemButton>
+            </StyledListItem>
           ))}
         </List>
         <StyledDivider />
         <List>
-          <ListItem disablePadding sx={{ display: "block" }}>
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? "initial" : "center",
-                px: 2.5,
-              }}
-              onClick={handleNesetedDrawer}
-            >
-              <ListItemIcon
-                sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : "auto",
-                  justifyContent: "center",
-                  color: "#fff",
-                }}
-              >
+          <StyledListItem disablePadding>
+            <StyledListItemButton open={open} onClick={handleNesetedDrawer}>
+              <StyledListItemIcon open={open}>
                 <img src={TeamIcon} alt='icon' />
-              </ListItemIcon>
-              <StyledListItemText
-                primary='Teams'
-                sx={{ opacity: open ? 1 : 0 }}
-              />
+              </StyledListItemIcon>
+              <StyledListItemText primary='Teams' open={open} />
               {open ? nestedIsOpen ? <ExpandLess /> : <ExpandMore /> : null}
-            </ListItemButton>
-          </ListItem>
+            </StyledListItemButton>
+          </StyledListItem>
           {open &&
             nestedIsOpen &&
             Object.entries(groupedItems).map(([name, items]) => {
               return (
                 <>
-                  <ListItem>
-                    <ListItemText primary={name} />
-                  </ListItem>
+                  <List dense>
+                    <StyledListItem>
+                      <StyledListItemText primary={name} open={open} />
+                    </StyledListItem>
+                  </List>
 
-                  {items.map((subitem, index) => {
+                  {items.map((subitem) => {
                     return (
-                      <ListItem>
+                      <StyledListItem disablePadding>
                         <NeededDrawerList items={subitem} />
-                      </ListItem>
+                      </StyledListItem>
                     );
                   })}
                 </>
               );
             })}
-          <ListItem disablePadding sx={{ display: "block" }}>
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: "bottom",
-                px: 2.5,
-              }}
-            >
-              <ListItemIcon
-                sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : "auto",
-                  justifyContent: "bottom",
-                  color: "#fff",
-                }}
-              >
-                <MenuIcon />
-              </ListItemIcon>
-              <StyledListItemText
-                primary='Logout'
-                sx={{ opacity: open ? 1 : 0 }}
-              />
-            </ListItemButton>
-          </ListItem>
+
+          <StyledListItemFooter disablePadding open={open}>
+            <VerticalList disablePadding>
+              <VerticalListItem open={open}>
+                <StyledIconButton>
+                  <img src={InfoIcon} alt='icon' />
+                </StyledIconButton>
+                <StyledIconButton>
+                  <img src={InfoIcon} alt='icon' />
+                </StyledIconButton>
+                <StyledIconButton>
+                  <img src={LogOutIcon} alt='icon' />
+                </StyledIconButton>
+              </VerticalListItem>
+            </VerticalList>
+          </StyledListItemFooter>
         </List>
       </Drawer>
     </Box>

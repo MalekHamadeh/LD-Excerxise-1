@@ -15,6 +15,7 @@ const NeededDrawerList = ({ items: { iconColor, text } }) => {
       return "#FC91AD";
     }
   };
+
   const StyledListItemText = styled(ListItemText)`
     & .MuiListItemText-primary {
       font-size: 0.79rem;
@@ -22,19 +23,22 @@ const NeededDrawerList = ({ items: { iconColor, text } }) => {
     }
   `;
 
+  const StyledListItemButton = styled(ListItemButton)`
+
+  justifyContent: center,
+  alignItems: flex-start,
+
+`;
+
   const StyledItemIcon = styled(SquareRoundedIcon)`
     color: ${handleColor(iconColor)};
   `;
 
   return (
-    <List disablePadding>
-      <ListItem disablePadding>
-        <ListItemButton justifyContent='center' alignItems='center'>
-          <StyledItemIcon />
-          <StyledListItemText primary={text} />
-        </ListItemButton>
-      </ListItem>
-    </List>
+    <StyledListItemButton>
+      <StyledItemIcon />
+      <StyledListItemText primary={text} />
+    </StyledListItemButton>
   );
 };
 
