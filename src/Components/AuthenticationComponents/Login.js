@@ -1,5 +1,5 @@
 import { Button } from "@mui/material";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   GridItem,
   GridContainer,
@@ -8,12 +8,27 @@ import {
   StyledAlert,
   StyledText,
 } from "../../Pages/Authentication/StyleAuthentication";
+import { useNavigate } from "react-router-dom";
 
 const Login = ({ onClick, successfulPass }) => {
   const [incorrect, isIncorrect] = useState(false);
-  const incorrectCredantials = () => {
-    isIncorrect(!incorrect);
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
+  const Navigate = useNavigate();
+
+  const handleEmail = (e) => {
+    emailRef.current.value = e.target.value;
   };
+  const handlePassword = (e) => {
+    passwordRef.current.value = e.target.value;
+  };
+  const canLogin = () => {
+    emailRef.current.value === undefined &&
+    passwordRef.current.value === undefined
+      ? isIncorrect(true)
+      : Navigate("/home");
+  };
+
   const goToSignUp = () => {
     onClick("SignUp");
   };
@@ -50,13 +65,21 @@ const Login = ({ onClick, successfulPass }) => {
         )}
       </GridItem>
       <GridItem xs={1}>
-        <StyledInput placeholder='Email' />
+        <StyledInput
+          placeholder='Email'
+          ref={emailRef}
+          onChange={handleEmail}
+        />
       </GridItem>
       <GridItem xs={1}>
-        <StyledInput placeholder='Password' />
+        <StyledInput
+          placeholder='Password'
+          ref={passwordRef}
+          onChange={handlePassword}
+        />
       </GridItem>
       <GridItem xs={1}>
-        <StyledButton variant='contained' onClick={incorrectCredantials}>
+        <StyledButton variant='contained' onClick={canLogin}>
           Login
         </StyledButton>
       </GridItem>
