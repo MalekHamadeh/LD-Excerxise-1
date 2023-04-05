@@ -9,12 +9,12 @@ import {
 } from "../../Pages/Authentication/StyleAuthentication";
 import SignUpContext from "../../Utils/SignUpContext/SignUpContext";
 
-const Signup = ({ onClick }) => {
-  const { title, step, setStep, data, setData, canContinue } =
-    useContext(SignUpContext);
+const Signup = ({ onClick, successfulSignUp }) => {
+  const { title, step, setStep } = useContext(SignUpContext);
 
   const goToLogin = () => {
     onClick("Login");
+    successfulSignUp(true);
   };
   const handleNext = () => {
     setStep((prev) => prev + 1);

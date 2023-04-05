@@ -9,9 +9,11 @@ import {
   StyledText,
 } from "../../Pages/Authentication/StyleAuthentication";
 import { useNavigate } from "react-router-dom";
+import Alert from "../Alert";
 
-const Login = ({ onClick, successfulPass }) => {
+const Login = ({ onClick, successfulPass, successfulSignUp }) => {
   const [incorrect, isIncorrect] = useState(false);
+  const [showAlert, shouldShowAlert] = useState(false);
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
   const Navigate = useNavigate();
@@ -22,11 +24,12 @@ const Login = ({ onClick, successfulPass }) => {
   const handlePassword = (e) => {
     passwordRef.current.value = e.target.value;
   };
+
   const canLogin = () => {
-    emailRef.current.value === undefined &&
-    passwordRef.current.value === undefined
-      ? isIncorrect(true)
-      : Navigate("/home");
+    emailRef.current.value !== undefined &&
+    passwordRef.current.value !== undefined
+      ? Navigate("/home")
+      : isIncorrect(true);
   };
 
   const goToSignUp = () => {
@@ -34,6 +37,21 @@ const Login = ({ onClick, successfulPass }) => {
   };
   const goToForgotPassword = () => {
     onClick("ForgotPassword");
+  };
+
+  const alertController = () => {
+    if (incorrect) {
+      return (
+        <Alert
+          isError
+          message='Please make sure you have the correct email or password'
+        />
+      );
+    } else if (successfulPass) {
+      return <Alert isSuccess message='Password was reset Successfully' />;
+    } else if (successfulSignUp) {
+      return <Alert isSuccess message='Account created Successfully' />;
+    }
   };
 
   return (
@@ -52,18 +70,7 @@ const Login = ({ onClick, successfulPass }) => {
         </StyledText>
       </GridItem>
       <GridItem />
-      <GridItem>
-        {incorrect && (
-          <StyledAlert severity='error'>
-            Please make sure you have the correct email or password
-          </StyledAlert>
-        )}
-        {successfulPass && (
-          <StyledAlert severity='success'>
-            Password was reset Successfully
-          </StyledAlert>
-        )}
-      </GridItem>
+      <GridItem>{alertController()}</GridItem>
       <GridItem xs={1}>
         <StyledInput
           placeholder='Email'

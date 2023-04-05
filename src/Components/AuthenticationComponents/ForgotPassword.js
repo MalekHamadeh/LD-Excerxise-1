@@ -8,9 +8,8 @@ import {
 import FormInputs from "./FormInputs";
 import PasswordContext from "../../Utils/PasswordContext/PasswordContext";
 
-const ForgotPassword = ({ onClick }) => {
-  const { title, step, setStep, data, setData, canContinue } =
-    useContext(PasswordContext);
+const ForgotPassword = ({ onClick, didSucceed }) => {
+  const { title, step, setStep } = useContext(PasswordContext);
 
   const handleNext = () => {
     setStep((prev) => prev + 1);
@@ -18,6 +17,7 @@ const ForgotPassword = ({ onClick }) => {
 
   const returnToLogin = () => {
     onClick("Login");
+    didSucceed(true);
   };
   return (
     <GridContainer

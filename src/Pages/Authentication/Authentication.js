@@ -16,11 +16,17 @@ import { PasswordProvider } from "../../Utils/PasswordContext/PasswordContext";
 const Authentication = () => {
   const [screen, setScreen] = useState("Login");
   const [successfulPass, setSuccessfulPass] = useState(false);
+  const [successfulSignUp, setSuccessfulSignUp] = useState(false);
 
   const handleScreens = (string) => {
     setScreen(string);
-    console.log(string);
-    console.log(screen);
+  };
+
+  const handleSucceed = (boolean) => {
+    setSuccessfulPass(boolean);
+  };
+  const handleSuccessfulSignUp = (boolean) => {
+    setSuccessfulSignUp(boolean);
   };
 
   return (
@@ -32,14 +38,24 @@ const Authentication = () => {
       </HeaderWrapper>
       <StyledPaper elevation={3}>
         {screen === "Login" ? (
-          <Login onClick={handleScreens} successfulPass={successfulPass} />
+          <Login
+            onClick={handleScreens}
+            successfulPass={successfulPass}
+            successfulSignUp={successfulSignUp}
+          />
         ) : screen === "SignUp" ? (
           <SignUpProvider>
-            <Signup onClick={handleScreens} />
+            <Signup
+              onClick={handleScreens}
+              successfulSignUp={handleSuccessfulSignUp}
+            />
           </SignUpProvider>
         ) : (
           <PasswordProvider>
-            <ForgotPassword onClick={handleScreens} />
+            <ForgotPassword
+              onClick={handleScreens}
+              didSucceed={handleSucceed}
+            />
           </PasswordProvider>
         )}
       </StyledPaper>
