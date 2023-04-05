@@ -3,7 +3,7 @@ import React from "react";
 import SquareRoundedIcon from "@mui/icons-material/SquareRounded";
 import styled from "styled-components";
 
-const NeededDrawerList = ({ items: { iconColor, text } }) => {
+const NeededDrawerList = ({ items: { iconColor, text }, index }) => {
   const handleColor = (color) => {
     if (color === "Yellow") {
       return "#EEC301";
@@ -35,7 +35,7 @@ const NeededDrawerList = ({ items: { iconColor, text } }) => {
   `;
 
   return (
-    <StyledListItemButton>
+    <StyledListItemButton key={index}>
       <StyledItemIcon />
       <StyledListItemText primary={text} />
     </StyledListItemButton>

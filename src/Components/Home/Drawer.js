@@ -1,12 +1,11 @@
 import * as React from "react";
-import { styled, useTheme } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
 import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
-import { MenuBookTwoTone } from "@mui/icons-material";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
@@ -15,14 +14,11 @@ import smallLogo from "../../Images/SmallLogo.svg";
 import NeededDrawerList from "./NeededDrawerList";
 import TeamIcon from "../../Images/teamIcon.svg";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
-import BrotliLogo from "../../Images/brotliLogo.svg";
-import PersonalBoardIcon from "../../Images/personalBoardIcon.svg";
-import HomeIcon from "../../Images/homeIcon.svg";
-import SettingsIcon from "../../Images/settingsIcon.svg";
 import MenuIcon from "../../Images/menuIcon.svg";
 import InfoIcon from "../../Images/infoIcon.svg";
 import LogOutIcon from "../../Images/logoutIcon.svg";
-import { Collapse, Icon } from "@mui/material";
+import { Icon } from "@mui/material";
+import DrawerContext from "../../Utils/DrawerContext";
 
 const drawerWidth = 240;
 
@@ -63,7 +59,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   },
 }));
 
-const Drawer = styled(MuiDrawer, {
+const StyledDrawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== "open",
 })(({ theme, open }) => ({
   width: drawerWidth,
@@ -81,9 +77,7 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 const StyledDivider = styled(Divider)`
-  &. MuiDivider-root {
-    color: "#fff";
-  }
+  background-color: #fff;
 `;
 
 const StyledLogo = styled(Icon)`
@@ -137,79 +131,13 @@ const VerticalListItem = styled(ListItem)`
   justify-content: ${({ open }) => (open ? "space-between" : "intial")};
 `;
 
-export default function MiniDrawer() {
+export default function Drawer() {
+  const { mainItems, subitems, data, handleChanges } =
+    React.useContext(DrawerContext);
+
   const [open, setOpen] = React.useState(false);
   const [nestedIsOpen, setNestedIsOpen] = React.useState(false);
 
-  const [mainItems, setMainItems] = React.useState([
-    {
-      icon: BrotliLogo,
-      text: "YellowTech Inc.",
-    },
-    {
-      icon: PersonalBoardIcon,
-      text: "Personal Dashboard",
-    },
-    {
-      icon: HomeIcon,
-      text: "Dashboard",
-    },
-    {
-      icon: SettingsIcon,
-      text: "Space Settings",
-    },
-  ]);
-
-  const [subitems, setSubItems] = React.useState([
-    {
-      text: "Coraly Tech & Dev",
-      iconColor: "Yellow",
-      title: "Coraly",
-    },
-    {
-      text: "Design Board",
-      iconColor: "Red",
-      title: "Coraly",
-    },
-    {
-      text: "Growth Hacking",
-      iconColor: "pink",
-      title: "Coraly",
-    },
-    {
-      text: "Website",
-      iconColor: "Yellow",
-      title: "Lasting Dynamics",
-    },
-    {
-      text: "Growth Hacking",
-      iconColor: "Red",
-      title: "Lasting Dynamics",
-    },
-    {
-      text: "UI/UX Design",
-      iconColor: "Pink",
-      title: "Lasting Dynamics",
-    },
-    {
-      text: "VL - Tech & Dev",
-      iconColor: "Yellow",
-      title: "Vetrina Live",
-    },
-    {
-      text: "VL - Growth Hacking",
-      iconColor: "Red",
-      title: "Vetrina Live",
-    },
-  ]);
-
-  const handleDrawer = () => {
-    setOpen(!open);
-  };
-
-  const handleNesetedDrawer = () => {
-    setNestedIsOpen(!nestedIsOpen);
-  };
   const groupedItems = subitems.reduce((acc, item) => {
     const { title } = item;
     if (title) {
@@ -218,10 +146,18 @@ export default function MiniDrawer() {
     return acc;
   }, {});
 
+  const handleDrawer = () => {
+    setOpen(!open);
+  };
+
+  const handleNested = () => {
+    setNestedIsOpen(!nestedIsOpen);
+  };
+
   return (
     <Box sx={{ height: "100vh" }}>
       <CssBaseline enableColorScheme />
-      <Drawer
+      <StyledDrawer
         variant='permanent'
         open={open}
         sx={{ display: "flex", height: "100vh" }}
@@ -234,13 +170,17 @@ export default function MiniDrawer() {
         </DrawerHeader>
 
         <List>
-          {mainItems.map(({ text, icon }, index) => (
-            <StyledListItem disablePadding key={index}>
+          {mainItems.map(({ icon, title, component }, index) => (
+            <StyledListItem
+              disablePadding
+              key={index}
+              onClick={() => handleChanges(title, component)}
+            >
               <StyledListItemButton open={open}>
                 <StyledListItemIcon open={open}>
                   {icon && <img src={icon} alt='icon' />}
                 </StyledListItemIcon>
-                <StyledListItemText primary={text} open={open} />
+                <StyledListItemText primary={title} open={open} />
               </StyledListItemButton>
             </StyledListItem>
           ))}
@@ -248,7 +188,7 @@ export default function MiniDrawer() {
         <StyledDivider />
         <List>
           <StyledListItem disablePadding>
-            <StyledListItemButton open={open} onClick={handleNesetedDrawer}>
+            <StyledListItemButton open={open} onClick={handleNested}>
               <StyledListItemIcon open={open}>
                 <img src={TeamIcon} alt='icon' />
               </StyledListItemIcon>
@@ -258,19 +198,19 @@ export default function MiniDrawer() {
           </StyledListItem>
           {open &&
             nestedIsOpen &&
-            Object.entries(groupedItems).map(([name, items]) => {
+            Object.entries(groupedItems).map(([name, items], index) => {
               return (
                 <>
-                  <List dense>
+                  <List dense key={index}>
                     <StyledListItem>
                       <StyledListItemText primary={name} open={open} />
                     </StyledListItem>
                   </List>
 
-                  {items.map((subitem) => {
+                  {items.map((subitem, index) => {
                     return (
-                      <StyledListItem disablePadding>
-                        <NeededDrawerList items={subitem} />
+                      <StyledListItem disablePadding key={index}>
+                        <NeededDrawerList items={subitem} index={index} />
                       </StyledListItem>
                     );
                   })}
@@ -294,7 +234,7 @@ export default function MiniDrawer() {
             </VerticalList>
           </StyledListItemFooter>
         </List>
-      </Drawer>
+      </StyledDrawer>
     </Box>
   );
 }
